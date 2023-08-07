@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="7.0.1" />
+    <PackageReference Include="Autofac.Mvc5" Version="6.1.0" />
+    <PackageReference Include="StackExchange.Redis" Version="2.6.116" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyCodeBase.Library\MyCodeBase.Library.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="OutputFile\" />
+  </ItemGroup>
+
+</Project>

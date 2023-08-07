@@ -1,0 +1,64 @@
+﻿<div>
+    <a onclick="ExportDocxFile()" class="btn btn-primary btn-cons JQ_btn">匯出Word檔</a>
+    <a onclick="ExportXlsxFile()" class="btn btn-primary btn-cons JQ_btn">匯出Excel檔</a>
+</div>
+
+<script>
+    // 匯出docx
+    function ExportDocxFile() {
+        $.ajax({
+            url: '@Url.Action("ExportDocxFile", "Home")',
+            type: 'POST',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function (response) {
+                // 下載部分
+                if (response instanceof Blob) {
+                    var blob = new Blob([response], { type: 'application/octet-stream' });
+                    var url = URL.createObjectURL(blob);
+                    var downloadLink = document.createElement('a');
+                    downloadLink.href = url;
+                    downloadLink.download = 'Binded.docx';
+                    downloadLink.click();
+                    location.reload();
+                }
+                else {
+                    ShowMessageBlock("查無!");
+                }
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+
+    // 匯出xlsx
+    function ExportXlsxFile() {
+        $.ajax({
+            url: '@Url.Action("ExportXlsxFile", "Home")',
+            type: 'POST',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function (response) {
+                // 下載部分
+                if (response instanceof Blob) {
+                    var blob = new Blob([response], { type: 'application/octet-stream' });
+                    var url = URL.createObjectURL(blob);
+                    var downloadLink = document.createElement('a');
+                    downloadLink.href = url;
+                    downloadLink.download = 'Binded.Xlsx';
+                    downloadLink.click();
+                    location.reload();
+                }
+                else {
+                    ShowMessageBlock("查無!");
+                }
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+</script>
