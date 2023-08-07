@@ -39,7 +39,7 @@ namespace MyCodeBase.Web.Controllers
             // 開啟範例文檔
             // var filePath = GetPrintTempFilePath("test.docx");
             // 路徑先寫死 等route整理好再用extension取
-            var doc = new Document("D:\\MyPractice\\DotNetPractice\\MyCodeBase\\MyCodeBase.Web\\Template\\test.docx");
+            var doc = new Document("D:\\MyPractice\\MyCodeBase\\MyCodeBase\\MyCodeBase.Web\\Template\\test.docx");
             doc.BindData(data);
             doc.Save("bindedDoc.docx", Aspose.Words.SaveFormat.Docx);
             //var docs = new List<Document>();
@@ -63,7 +63,7 @@ namespace MyCodeBase.Web.Controllers
             // 開啟範例文檔
              var filePath = GetPrintTempFilePath("test.docx");
             // 路徑先寫死 等route整理好再用extension取
-            var workBook = new Workbook("D:\\MyPractice\\DotNetPractice\\MyCodeBase\\MyCodeBase.Web\\Template\\test.xlsx");
+            var workBook = new Workbook("D:\\MyPractice\\MyCodeBase\\MyCodeBase\\MyCodeBase.Web\\Template\\test.xlsx");
             workBook.BindData(data);
             workBook.Save("bindedDoc.xlsx", Aspose.Cells.SaveFormat.Xlsx);
             
