@@ -12,6 +12,9 @@ namespace MyCodeBase.Web
     {
         protected void Application_Start()
         {
+            // ¥þ°ìµù¥U
+            GlobalFilters.Filters.Add(new Filters.NLogFilters.ActionLogFilter());
+
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

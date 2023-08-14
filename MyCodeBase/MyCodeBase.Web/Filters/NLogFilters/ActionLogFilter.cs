@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace MyCodeBase.Web.Filters.NLogFilters
 {
-    public class ActionLogFilter: ActionFilterAttribute
+    public class ActionLogFilter : ActionFilterAttribute
     {
         private NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -18,9 +18,11 @@ namespace MyCodeBase.Web.Filters.NLogFilters
             var actionName = controller.RouteData.Values["action"];
 
             logger
-              .WithProperty("用戶名稱", userName)
-              .WithProperty("Property2", ip)
+              .WithProperty("Property1", "test1")
+              .WithProperty("Property2", "test2")
               .Info($"{userName} Request {actionName} Page");
+
+            base.OnActionExecuting(filterContext);
         }
     }
 }

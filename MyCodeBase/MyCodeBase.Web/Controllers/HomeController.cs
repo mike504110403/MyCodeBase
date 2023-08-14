@@ -13,9 +13,11 @@ using MyCodeBase.Web.Models.BaseService;
 using MyCodeBase.Web.Models.FakeDataForDemoService;
 using Aspose.Cells;
 using System.IO;
+using MyCodeBase.Web.Filters.NLogFilters;
 
 namespace MyCodeBase.Web.Controllers
 {
+    [ActionLogFilter]
     public class HomeController : BaseController
     {
         private NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
