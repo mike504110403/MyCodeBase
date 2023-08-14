@@ -12,6 +12,7 @@ using Aspose.Words.Reporting;
 using MyCodeBase.Web.Models.BaseService;
 using MyCodeBase.Web.Models.FakeDataForDemoService;
 using Aspose.Cells;
+using System.IO;
 
 namespace MyCodeBase.Web.Controllers
 {
@@ -68,6 +69,38 @@ namespace MyCodeBase.Web.Controllers
             workBook.Save("bindedDoc.xlsx", Aspose.Cells.SaveFormat.Xlsx);
             
             return File(workBook.GetFileStream(Aspose.Cells.SaveFormat.Xlsx), "application/xlsx");
+        }
+
+        /// <summary>
+        /// 列印
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public ActionResult Print()
+        {
+            var data = _FakeMultiLayerList.FakeListForBind();
+
+            // 開啟範例文檔
+            var doc = new Document("D:\\MyPractice\\MyCodeBase\\MyCodeBase\\MyCodeBase.Web\\Template\\test.docx");
+            doc.BindData(data);
+            doc.Save("bindedDoc.docx", Aspose.Words.SaveFormat.Docx);
+
+            // 如果有資料
+            if (doc != null)
+            {
+                // 轉html字串
+                var content = string.Empty;
+                // 利用StreamReader將檔案讀成html格式 //沒有aspose憑證，檔案內會有浮水印，svae成html會報錯 可以將圖片傳到本地來解決
+                using (StreamReader reader = new StreamReader(doc.GetFileStream(Aspose.Words.SaveFormat.Html)))
+                {
+                    content = reader.ReadToEnd(); // 將讀取內容存到content
+                }
+                return Content(content); // 回傳字串結果
+            }
+            else
+            {
+                return Json(new { nodata = true });
+            }
         }
     }
 }
