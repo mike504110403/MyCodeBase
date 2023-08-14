@@ -19,16 +19,17 @@ namespace MyCodeBase.Web.Controllers
     public class HomeController : BaseController
     {
         private NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public ActionResult Index()
         {
-            //logger.Trace("**** Trace *** ");
-            //logger.Debug("**** Debug ***");
-            //logger.Info("**** Info ***");
-            //logger.Warn("**** Warn ***");
-            //logger.Error("**** Error ***");
-            //logger.Fatal("**** Fatal ***");
+            var userName = User.Identity.Name; // 獲取已驗證的用戶名
+            var actionName = GetActionName(); // 自定義的action Name
+            logger.Info($"{userName} Into {actionName} Page");
             return View();
         }
+
+
+        #region 檔案相關
         /// <summary>
         /// 取得doc檔匯出串流
         /// </summary>
@@ -52,7 +53,6 @@ namespace MyCodeBase.Web.Controllers
             
             return File(doc.GetFileStream(Aspose.Words.SaveFormat.Docx), "application/docx");
         }
-
         /// <summary>
         /// 取得xlsx檔匯出串流
         /// </summary>
@@ -70,7 +70,6 @@ namespace MyCodeBase.Web.Controllers
             
             return File(workBook.GetFileStream(Aspose.Cells.SaveFormat.Xlsx), "application/xlsx");
         }
-
         /// <summary>
         /// 列印
         /// </summary>
@@ -102,5 +101,6 @@ namespace MyCodeBase.Web.Controllers
                 return Json(new { nodata = true });
             }
         }
+        #endregion
     }
 }

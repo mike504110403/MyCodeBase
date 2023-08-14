@@ -10,6 +10,8 @@
   <ItemGroup>
     <PackageReference Include="Autofac" Version="7.0.1" />
     <PackageReference Include="Autofac.Mvc5" Version="6.1.0" />
+    <PackageReference Include="NLog" Version="5.2.3" />
+    <PackageReference Include="NLog.Schema" Version="5.2.3" />
     <PackageReference Include="StackExchange.Redis" Version="2.6.116" />
   </ItemGroup>
 
