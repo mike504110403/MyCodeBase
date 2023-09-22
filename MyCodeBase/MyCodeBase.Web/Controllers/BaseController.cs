@@ -26,6 +26,10 @@ namespace MyCodeBase.Web.Controllers
         }
         #endregion
 
+        #region NLog
+        protected NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        #endregion
+
         /// <summary>
         /// 取得動作名稱
         /// </summary>

@@ -2,6 +2,7 @@
     <a onclick="ExportDocxFile()" class="btn btn-primary btn-cons JQ_btn">匯出Word檔</a>
     <a onclick="ExportXlsxFile()" class="btn btn-primary btn-cons JQ_btn">匯出Excel檔</a>
     <a onclick="PrintDocxFile()" class="btn btn-primary btn-cons JQ_btn">列印Word檔</a>
+    <a onclick="NLogTest();" class="btn btn-primary btn-cons JQ_btn">NLog 測試</a>
 </div>
 <div id="PrintContainer" class="hidden" style="display: flex; justify-content: center; align-items: center;"></div>
 
@@ -26,7 +27,7 @@
                     location.reload();
                 }
                 else {
-                    ShowMessageBlock("查無!");
+                    alert("查無!");
                 }
             },
             error: function (error) {
@@ -55,7 +56,7 @@
                     location.reload();
                 }
                 else {
-                    ShowMessageBlock("查無!");
+                    alert("查無!");
                 }
             },
             error: function (error) {
@@ -64,20 +65,19 @@
         });
     }
 
-    // 列印證明冊
+    // 列印
     function PrintDocxFile() {
         var url = '@Url.Action("Print", "Home")';
         $.ajax({
             url: url,
             type: 'GET',
             success: function (response) {
-                debugger
                 if (typeof response === 'string') {
                     $('#PrintContainer').html(response);
                     printpage('PrintContainer');
                 }
                 else {
-                    ShowMessageBlock("查無資料!");
+                    alert("查無資料!");
                 }
             },
             error: function (error) {
@@ -85,4 +85,19 @@
             }
         });
     }
-</script>
+
+    // NLog 測試
+    function NLogTest() {
+        var url = '@Url.Action("NLogTest", "Home")';
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function (response) {
+                alert(response);
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
+</script> 

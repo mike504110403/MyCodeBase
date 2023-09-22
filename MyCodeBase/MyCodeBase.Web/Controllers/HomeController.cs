@@ -20,16 +20,44 @@ namespace MyCodeBase.Web.Controllers
     [ActionLogFilter]
     public class HomeController : BaseController
     {
-        private NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
-
+        /// <summary>
+        /// 首頁
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
-            var userName = User.Identity.Name; // 獲取已驗證的用戶名
-            var actionName = GetActionName(); // 自定義的action Name
-            logger.Info($"{userName} Into {actionName} Page");
+
             return View();
         }
+        /// <summary>
+        /// NLog測試
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult NLogTest()
+        {
+            //var userName = User.Identity.Name; // 獲取已驗證的用戶名
+            //var actionName = GetActionName(); // 自定義的action Name
+            //logger.Info($"{userName} Into {actionName} Page");
 
+            logger.Trace("This is Trace");
+            logger.Debug("This is Debug");
+            logger.Info("This is Info");
+            logger.Warn("This is Warn");
+            logger.Error("This is Error");
+            logger.Fatal("This is Fatal");
+
+            try
+            {
+                var a = 0;
+                int result = 6 / a;
+            }
+            catch (Exception ex)
+            {
+                logger.Fatal(ex);
+            }
+
+            return Content("請前往'~/AppData/Logs'確認log檔");
+        }
 
         #region 檔案相關
         /// <summary>

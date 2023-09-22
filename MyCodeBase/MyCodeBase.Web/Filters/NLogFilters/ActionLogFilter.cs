@@ -20,7 +20,7 @@ namespace MyCodeBase.Web.Filters.NLogFilters
             logger
               .WithProperty("Property1", "test1")
               .WithProperty("Property2", "test2")
-              .Info($"{userName} Request {actionName} Page");
+              .Trace($"{userName} Request {actionName} Page");
 
             base.OnActionExecuting(filterContext);
         }
