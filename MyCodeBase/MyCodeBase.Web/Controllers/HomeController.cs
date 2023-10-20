@@ -14,6 +14,10 @@ using MyCodeBase.Web.Models.FakeDataForDemoService;
 using Aspose.Cells;
 using System.IO;
 using MyCodeBase.Web.Filters.NLogFilters;
+using Aspose.Words.Replacing;
+using Aspose.Words.Tables;
+using System.Text.RegularExpressions;
+using System.Collections;
 
 namespace MyCodeBase.Web.Controllers
 {
@@ -113,7 +117,6 @@ namespace MyCodeBase.Web.Controllers
             var doc = new Document("D:\\MyPractice\\MyCodeBase\\MyCodeBase\\MyCodeBase.Web\\Template\\test.docx");
             doc.BindData(data);
             doc.Save("bindedDoc.docx", Aspose.Words.SaveFormat.Docx);
-
             // 如果有資料
             if (doc != null)
             {
@@ -131,6 +134,141 @@ namespace MyCodeBase.Web.Controllers
                 return Json(new { nodata = true });
             }
         }
+        /// <summary>
+        /// 操控doc文檔
+        /// </summary>
+        public void DocControll()
+        {
+            var doc = new Document();
+            var builder = new DocumentBuilder(doc);
+
+            #region 表格操作
+            builder.StartTable(); // 建立第一個表格
+            builder.InsertCell(); // 新增儲存格
+            builder.Write("Row 1, Cell 1."); // 寫入文字
+            builder.InsertCell(); // 同row再新增表格
+            builder.Write("Row 1, Cell 2."); // 寫入文字
+            builder.EndRow(); // 結束row
+            builder.InsertCell(); // 在下一row新增儲存格
+            builder.Write("Row 2, Cell 1.");
+            builder.InsertCell();
+            builder.Write("Row 2, Cell 2.");
+            builder.EndTable(); // 結束表格
+
+            // 全文件找第一個表格
+            var table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            // 參數設置
+            var options = new FindReplaceOptions
+            {
+                MatchCase = true, // 是否區分大小寫
+                FindWholeWordsOnly = true // 是否全字匹配
+            };
+            // 將 "Mr" 替換為 "test"
+            table.Rows[1].Cells[2].Range.Replace("Mr", "test", options);
+            #endregion
+            #region 段落(樣式)操作
+            // 新建一個名為 MyStyle 的段落樣式
+            doc.Styles.Add(StyleType.Paragraph, "MyStyle");
+            var font = builder.Font;
+            font.Bold = true;
+            font.Color = System.Drawing.Color.Red;
+            font.Italic = true;
+            font.Name = "Arial";
+            font.Size = 24;
+            font.Spacing = 5;
+            font.Underline = Underline.Double;
+            // 設置段落樣式
+            builder.ParagraphFormat.Style = doc.Styles["MyStyle"];
+            builder.MoveToDocumentEnd(); // 移動到文件末尾
+            builder.Writeln("I'm a very nice formatted string.");
+            #endregion
+            #region 書籤操作
+            // 找到書籤 "MyBookmark" 的位置(Range)
+            var bookmark = doc.Range.Bookmarks["MyBookmark"];
+            // 取書籤的名稱和內容
+            var name = bookmark.Name;
+            var text = bookmark.Text;
+            // 替換書籤的名稱和內容
+            bookmark.Name = "RenamedBookmark";
+            bookmark.Text = "This is a new bookmarked text.";
+            #endregion
+            #region 文字取代
+            // 正則表達式 忽略大小寫
+            var regex = new Regex("Hello World!", RegexOptions.IgnoreCase);
+            // 取代文字
+            doc.Range.Replace(regex, "Hi Everyone!");
+            #endregion
+            #region 分隔符控制
+            // 歷遍所有段落
+            foreach (Paragraph par in doc.GetChildNodes(NodeType.Paragraph, true))
+            {
+                par.ParagraphBreakFont.Hidden = false;
+                // 歷遍文本片段
+                foreach (Run run in par.GetChildNodes(NodeType.Run, true))
+                {
+                    if (run.Font.Hidden)
+                        run.Font.Hidden = false;
+                }
+            }
+            #endregion
+            #region 分頁符控制
+            NodeCollection paragraphs = doc.GetChildNodes(NodeType.Paragraph, true);
+            // 歷遍段落
+            foreach (Paragraph para in paragraphs)
+            {
+                // 段落情是否有分頁符
+                if (para.ParagraphFormat.PageBreakBefore)
+                    para.ParagraphFormat.PageBreakBefore = false;
+                // 歷遍文本片段
+                foreach (Run run in para.Runs)
+                    // 移除分頁符
+                    if (run.Text.Contains(ControlChar.PageBreak))
+                        run.Text = run.Text.Replace(ControlChar.PageBreak, string.Empty);
+            }
+            #endregion
+            #region 節操作
+            for (int i = doc.Sections.Count - 2; i >= 0; i--)
+            {
+                // 將內容插到開頭
+                doc.LastSection.PrependContent(doc.Sections[i]);
+                // 移除節
+                doc.Sections[i].Remove();
+            }
+            #endregion
+            #region 評論操作
+            var comment = new Aspose.Words.Comment(doc);
+            // 新增段落
+            Paragraph commentParagraph = new Paragraph(doc);
+            commentParagraph.AppendChild(new Run(doc, "This is comment!!!"));
+            // 將段落加到評論
+            comment.AppendChild(commentParagraph);
+            
+            int commentId = 0;
+            CommentRangeStart start = new CommentRangeStart(doc, commentId);
+            CommentRangeEnd end = new CommentRangeEnd(doc, commentId);
+            builder.Write("This text is before the comment. ");
+            builder.InsertNode(comment); // 加入評論開始節點
+            builder.InsertNode(start);
+            builder.Write("This text is commented. ");
+            builder.InsertNode(end); // 加入評論結束節點
+            builder.Write("This text is after the comment.");
+
+            var collectedComments = new ArrayList();
+            NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
+            // 取出所有評論
+            foreach (Aspose.Words.Comment com in comments)
+                collectedComments.Add(com.Author + " " + com.DateTime + " " + com.ToString(Aspose.Words.SaveFormat.Text));
+            // 移除評論
+            foreach (Aspose.Words.Comment itemCom in collectedComments)
+                itemCom.Remove(); // 移除單筆
+            // 移除全部
+            collectedComments.Clear();
+            #endregion
+
+
+
+        }
+
         #endregion
     }
 }

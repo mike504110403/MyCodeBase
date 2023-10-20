@@ -4,6 +4,11 @@
     <a onclick="PrintDocxFile()" class="btn btn-primary btn-cons JQ_btn">列印Word檔</a>
     <a onclick="NLogTest();" class="btn btn-primary btn-cons JQ_btn">NLog 測試</a>
 </div>
+<div>
+    @{Html.RenderPartial("AsposeContentToImage");}
+</div>
+
+
 <div id="PrintContainer" class="hidden" style="display: flex; justify-content: center; align-items: center;"></div>
 
 <script>
