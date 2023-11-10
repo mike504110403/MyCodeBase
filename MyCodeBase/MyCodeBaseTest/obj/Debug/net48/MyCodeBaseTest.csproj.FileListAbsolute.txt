@@ -1,0 +1,16 @@
+D:\MyPractice\MyCodeBase\MyCodeBase\MyCodeBaseTest\bin\Debug\net48\NUnit3.TestAdapter.dll
+D:\MyPractice\MyCodeBase\MyCodeBase\MyCodeBaseTest\bin\Debug\net48\NUnit3.TestAdapter.pdb
+D:\MyPractice\MyCodeBase\MyCodeBase\MyCodeBaseTest\bin\Debug\net48\nunit.engine.dll
+D:\MyPractice\MyCodeBase\MyCodeBase\MyCodeBaseTest\bin\Debug\net48\nunit.engine.api.dll
+D:\MyPractice\MyCodeBase\MyCodeBase\MyCodeBaseTest\bin\Debug\net48\MyCodeBaseTest.dll
+D:\MyPractice\MyCodeBase\MyCodeBase\MyCodeBaseTest\bin\Debug\net48\MyCodeBaseTest.pdb
+D:\MyPractice\MyCodeBase\MyCodeBase\MyCodeBaseTest\bin\Debug\net48\Microsoft.VisualStudio.CodeCoverage.Shim.dll
+D:\MyPractice\MyCodeBase\MyCodeBase\MyCodeBaseTest\bin\Debug\net48\nunit.framework.dll
+D:\MyPractice\MyCodeBase\MyCodeBase\MyCodeBaseTest\obj\Debug\net48\MyCodeBaseTest.csproj.AssemblyReference.cache
+D:\MyPractice\MyCodeBase\MyCodeBase\MyCodeBaseTest\obj\Debug\net48\MyCodeBaseTest.GeneratedMSBuildEditorConfig.editorconfig
+D:\MyPractice\MyCodeBase\MyCodeBase\MyCodeBaseTest\obj\Debug\net48\MyCodeBaseTest.AssemblyInfoInputs.cache
+D:\MyPractice\MyCodeBase\MyCodeBase\MyCodeBaseTest\obj\Debug\net48\MyCodeBaseTest.AssemblyInfo.cs
+D:\MyPractice\MyCodeBase\MyCodeBase\MyCodeBaseTest\obj\Debug\net48\MyCodeBaseTest.csproj.CoreCompileInputs.cache
+D:\MyPractice\MyCodeBase\MyCodeBase\MyCodeBaseTest\obj\Debug\net48\MyCodeBaseTest.csproj.CopyComplete
+D:\MyPractice\MyCodeBase\MyCodeBase\MyCodeBaseTest\obj\Debug\net48\MyCodeBaseTest.dll
+D:\MyPractice\MyCodeBase\MyCodeBase\MyCodeBaseTest\obj\Debug\net48\MyCodeBaseTest.pdb
