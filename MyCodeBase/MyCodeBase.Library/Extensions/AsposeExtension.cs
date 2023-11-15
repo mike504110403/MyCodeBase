@@ -1,6 +1,7 @@
 ﻿using Aspose.Cells;
 using Aspose.Words;
 using Aspose.Words.Reporting;
+using Aspose.Words.Tables;
 
 using MyCodeBase.Library.ViewModels.Test;
 
@@ -179,6 +180,102 @@ namespace MyCodeBase.Library.Extensions
             }
 
             return tables;
+        }
+        /// <summary>
+        /// 合併Cell
+        /// </summary>
+        /// <param name="row">要合併的row</param>
+        /// <param name="startColumnIndex">起始欄位置</param>
+        public static void MergyCell(this Aspose.Words.Tables.Row row, int startColumnIndex)
+        {
+            Aspose.Words.Tables.Cell cell = row.Cells[startColumnIndex];
+            cell.CellFormat.HorizontalMerge = CellMerge.First;
+
+            Aspose.Words.Tables.Cell nextCell = row.Cells[startColumnIndex + 1];
+            nextCell.CellFormat.HorizontalMerge = CellMerge.Previous;
+        }
+        /// <summary>
+        /// 多欄位合併
+        /// </summary>
+        /// <param name="row">要合併的row</param>
+        /// <param name="startColumnIndex">起始欄位置</param>
+        /// <param name="ColumnCount">要合併幾欄</param>
+        public static void MergyCellMutiple(this Aspose.Words.Tables.Row row, int startColumnIndex, int ColumnCount)
+        {
+            for (int i = 0; i < ColumnCount; i++)
+            {
+                Aspose.Words.Tables.Cell cell = row.Cells[i];
+                cell.CellFormat.HorizontalMerge = (i == startColumnIndex) ? CellMerge.First : CellMerge.Previous;
+            }
+        }
+        /// <summary>
+        /// 列表資料取代書籤 需先於doc作對應class屬性的書籤
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="doc"></param>
+        /// <param name="bookmarkMappings">屬性對應物件</param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static Document BindBookMark<T>(this Document doc, List<T> data)
+        {
+            var bookmarkMappings = data.GetBookmarkMappings();
+            // 替換書籤資料
+            foreach (var mapping in bookmarkMappings)
+            {
+                var values = data.Select(mapping.Value).ToList();
+                doc.BindBookmark(mapping.Key, values);
+            }
+
+            return doc;
+        }
+        /// <summary>
+        /// 寫入指定書籤位置資料
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="doc"></param>
+        /// <param name="bookmarkName">書籤名稱</param>
+        /// <param name="dataList">要塞的資料</param>
+        public static void BindBookmark<T>(this Document doc, string bookmarkName, List<T> dataList)
+        {
+            var builder = new DocumentBuilder(doc);
+            var toWrite = new StringBuilder();
+            for (int i = 0; i < dataList.Count; i++)
+            {
+                var item = dataList[i];
+                toWrite.Append(item.ToString());
+                if (i < dataList.Count - 1)  // 檢查是否為最後一筆資料
+                {
+                    toWrite.Append(ControlChar.Tab);
+                }
+            }
+            builder.MoveToBookmark(bookmarkName);
+            builder.Write(toWrite.ToString());
+        }
+        /// <summary>
+        /// 取得書籤與屬性的對應
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        private static Dictionary<string, Func<T, object>> GetBookmarkMappings<T>(this List<T> data)
+        {
+            var properties = typeof(T).GetProperties();
+            var listTypeFields = properties
+                .Where(p => p.PropertyType.IsGenericType && p.GetValue(data, null) is IList)
+                .ToList();
+
+            var bookmarkMappings = new Dictionary<string, Func<T, object>>();
+
+            foreach (var property in properties)
+            {
+                if (!listTypeFields.Any(p => p.Name == property.Name))
+                {
+                    // 排除屬性為 List<T> 的情況，只處理單一屬性
+                    bookmarkMappings.Add(property.Name, x => property.GetValue(x));
+                }
+            }
+
+            return bookmarkMappings;
         }
         #endregion
 
